@@ -8,10 +8,10 @@ class RouterOS(Termination):
 		super().__init__();
 		
 	def rosToSecs(self, ts):
-		return round((self.rosToMicroSecs(ts) / 1_000_000));
+		return int(round((self.rosToMicroSecs(ts) / 1_000_000)));
 		
 	def rosToMiliSecs(self, ts):
-		return round((self.rosToMicroSecs(ts) / 1_000));
+		return int(round((self.rosToMicroSecs(ts) / 1_000)));
 		
 	def rosToMicroSecs(self, ts):
 		##sample inputs
@@ -59,6 +59,6 @@ class RouterOS(Termination):
 			seconds				= int(s_str) if s_str else 0;
 	
 		total_seconds		= weeks * 7 * 86400 + days * 86400 + hours * 3600 + minutes * 60 + seconds;
-		return (total_seconds * 1_000_000 + micro);
+		return int(total_seconds * 1_000_000 + micro);
 		
 		
