@@ -1,26 +1,28 @@
-
-from .processes import Processes as _Processes
+from .process import Process as _Process
 from .tools import Tools as _Tools
 from .test import Test as _Test
 
 class Facts:
 	
-	_s = {}
-
+	_s		= {};
+	
 	@classmethod
-	def getProcesses(cls):
-		if "getProcesses" not in cls._s:
-			cls._s["getProcesses"] = _Processes();
-		return cls._s["getProcesses"];
+	def getProcess(cls):
+		key		= "getProcess";
+		if key not in cls._s:
+			cls._s[key] = _Process();
+		return cls._s[key];
 
 	@classmethod
 	def getTools(cls):
-		if "getTools" not in cls._s:
-			cls._s["getTools"] = _Tools();
-		return cls._s["getTools"];
+		key		= "getTools";
+		if key not in cls._s:
+			cls._s[key] = _Tools();
+		return cls._s[key];
 		
 	@classmethod
 	def getTest(cls):
-		if "getTest" not in cls._s:
-			cls._s["getTest"] = _Test();
-		return cls._s["getTest"];
+		key		= "getTest";
+		if key not in cls._s:
+			cls._s[key] = _Test();
+		return cls._s[key];
