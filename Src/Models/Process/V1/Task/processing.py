@@ -15,7 +15,7 @@ class Processing(Zulu):
 			try:
 
 				start		= time.monotonic();
-				self.getFunction()();
+				self.getFunction()(self);
 				elapsed		= time.monotonic() - start;
 
 				if elapsed > self.getTimeout():
@@ -24,8 +24,5 @@ class Processing(Zulu):
 
 			except Exception as e:
 				#logging needed
-				# NOTE: deliberately not calling self.terminate() here -
-				# a single failed collection shouldn't permanently kill
-				# this ScheduledMetric; it'll just be retried next cycle.
 				if self.getDebug():
 					raise e;

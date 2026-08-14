@@ -12,8 +12,16 @@ class Alpha(Initialization):
 		self._interval: Optional[float]				= None
 		self._fn: Optional[Callable[[], None]]		= None
 		self._timeout: float						= 10.0
+		self._avps									= {};
+		self._ctrlObj								= None;
 
-	# --- next_run ---
+	def setControl(self, obj):
+		self._ctrlObj	= obj;
+		return self;
+	
+	def getControl(self):
+		return self._ctrlObj;
+		
 	def getNextRun(self) -> float:
 		return self._next_run;
 
@@ -55,6 +63,15 @@ class Alpha(Initialization):
 	def setTimeout(self, timeout: float):
 		self._timeout	= timeout;
 		return self;
+		
+	def setData(self, key, val):
+		self._avps[key]		= val;
+		return self;
+		
+	def getData(self, key):
+		if key in self._avps:
+			return self._avps[key];
+		return None;
 
 	def __lt__(self, other):
 		# heapq only ever needs <, not the full comparison suite

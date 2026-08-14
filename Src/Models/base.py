@@ -1,3 +1,6 @@
+
+import uuid
+
 class Base:
 	
 	def __init__(self):
@@ -5,11 +8,15 @@ class Base:
 			raise TypeError("Base is abstract and cannot be instantiated directly");
 
 		self._s				= {};
+		self._guid			= str(uuid.uuid4()).upper();
 		self._Facts			= None;
 		self._isInit		= False;
 		self._isTerm		= False;
 		self._debugObj		= False;
-				
+	
+	def getGuid(self):
+		return self._guid;
+					
 	def isInit(self):
 		return self._isInit;
 

@@ -1,4 +1,4 @@
-import heapq
+import heapq, threading
 from typing import List
 from ..Task.alpha import Alpha as _taskObj
 from .initialization import Initialization
@@ -11,6 +11,7 @@ class Alpha(Initialization):
 		self._max_workers: int					= 4;
 		self._heap: List[_taskObj]				= [];
 		self._allStop							= self.getFacts().getProcess().getAllStop();
+		self._lock								= threading.Lock();
 
 	def getMaxWorkers(self) -> int:
 		return self._max_workers
@@ -23,8 +24,12 @@ class Alpha(Initialization):
 		with self._lock:
 			return len(self._heap)
 
+
+	##Tasks
 	def getTask(self):
-		return _taskObj();
+		rObj		= _taskObj();
+		rObj.setControl(self);
+		return rObj;
 	
 	def registerTask(self, taskObj):
 		if taskObj.getSeq() is None:
@@ -38,6 +43,14 @@ class Alpha(Initialization):
 
 		return self;
 	
+	def removeTask(self, taskObj):
+		with self._lock:
+			try:
+				self._heap.remove(taskObj);
+				heapq.heapify(self._heap)  # restore heap invariant, O(n)
+			except ValueError:
+				pass  # wasn't in the heap
+		return self;
 
 	
 

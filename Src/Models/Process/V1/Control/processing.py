@@ -1,4 +1,4 @@
-import heapq, threading, time
+import heapq, time
 from .zulu import Zulu
 
 class Processing(Zulu):
@@ -6,7 +6,7 @@ class Processing(Zulu):
 	def __init__(self):
 		
 		super().__init__();
-		self._lock		= threading.Lock();
+		
 	
 	def processLoop(self):
 		while not self._allStop.is_set():
@@ -30,8 +30,7 @@ class Processing(Zulu):
 				with self._lock:
 					taskObj	= heapq.heappop(self._heap);
 
-				# reschedule before dispatch so drift is measured from
-				# the intended slot, not from whenever the run finishes
+
 				taskObj.setNextRun(taskObj.getNextRun() + taskObj.getInterval());
 
 				with self._lock:
