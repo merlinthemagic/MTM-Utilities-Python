@@ -1,3 +1,4 @@
+import heapq
 from typing import List
 from ..Task.alpha import Alpha as _taskObj
 from .initialization import Initialization
@@ -24,7 +25,18 @@ class Alpha(Initialization):
 
 	def getTask(self):
 		return _taskObj();
+	
+	def registerTask(self, taskObj):
+		if taskObj.getSeq() is None:
+			taskObj.setSeq(next(self._counter));
 
+		if not taskObj.isInit():
+			taskObj.initialize();
+
+		with self._lock:
+			heapq.heappush(self._heap, taskObj);
+
+		return self;
 	
 
 	

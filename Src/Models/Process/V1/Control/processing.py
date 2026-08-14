@@ -8,7 +8,10 @@ class Processing(Zulu):
 		super().__init__();
 		self._lock		= threading.Lock();
 	
-		
+	def processLoop(self):
+		while not self._allStop.is_set():
+			self.process();
+			
 	def process(self):
 		
 		if self._isInit:
@@ -29,7 +32,7 @@ class Processing(Zulu):
 
 				# reschedule before dispatch so drift is measured from
 				# the intended slot, not from whenever the run finishes
-				task.setNextRun(taskObj.getNextRun() + taskObj.getInterval());
+				taskObj.setNextRun(taskObj.getNextRun() + taskObj.getInterval());
 
 				with self._lock:
 					heapq.heappush(self._heap, taskObj);
