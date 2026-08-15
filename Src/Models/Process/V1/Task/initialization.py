@@ -23,7 +23,7 @@ class Initialization(Processing):
 					raise ValueError("seq must be set before initialize() (assigned by the scheduler)");
 
 				if self.getNextRun() is None:
-					self.setNextRun(time.monotonic() + self.getInterval());
+					self.setNextRun(time.monotonic() + 1); ##all tasks run right away to start, then the interval kicks in
 
 				self._isInit	= True;
 
