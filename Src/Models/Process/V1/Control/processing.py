@@ -30,13 +30,15 @@ class Processing(Zulu):
 				with self._lock:
 					taskObj	= heapq.heappop(self._heap);
 
-
+				
 				taskObj.setNextRun(taskObj.getNextRun() + taskObj.getInterval());
 
 				with self._lock:
 					heapq.heappush(self._heap, taskObj);
-
-				self._pool.submit(taskObj.process);
+				
+				if taskObj.getIdle():
+					taskObj.setIdle(False);
+					self._pool.submit(taskObj.process);
 
 			except Exception as e:
 				#logging needed

@@ -12,6 +12,7 @@ class Alpha(Initialization):
 		self._heap: List[_taskObj]				= [];
 		self._allStop							= self.getFacts().getProcess().getAllStop();
 		self._lock								= threading.Lock();
+		self._exCb								= {"obj": None, "Method": None};
 
 	def getMaxWorkers(self) -> int:
 		return self._max_workers
@@ -28,10 +29,11 @@ class Alpha(Initialization):
 	##Tasks
 	def getTask(self):
 		rObj		= _taskObj();
-		rObj.setControl(self);
+		rObj.setControl(self).setDebugObj(self._debugObj);
 		return rObj;
 	
 	def registerTask(self, taskObj):
+		
 		if taskObj.getSeq() is None:
 			taskObj.setSeq(next(self._counter));
 
@@ -52,6 +54,19 @@ class Alpha(Initialization):
 				pass  # wasn't in the heap
 		return self;
 
+	def setExceptionCb(self, obj, method):
+		##Tasks and control exceptions are sent here
+		self._exCb["obj"]		= obj;
+		self._exCb["Method"]	= method;
+		return self;
+		
+	def exceptionCb(self, e, taskObj):
+		if self._exCb["obj"] is not None:
+			try:
+				getattr(self._exCb["obj"], self._exCb["Method"])(e, taskObj);
+			except Exception as e:
+				pass;
+		return self;
 	
 
 	

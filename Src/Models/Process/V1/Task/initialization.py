@@ -12,7 +12,7 @@ class Initialization(Processing):
 		if not self._isInit:
 			
 			try:
-
+				
 				if self.getName() is None:
 					raise ValueError("name must be set before initialize()");
 				if self.getFunction() is None:
@@ -23,7 +23,10 @@ class Initialization(Processing):
 					raise ValueError("seq must be set before initialize() (assigned by the scheduler)");
 
 				if self.getNextRun() is None:
-					self.setNextRun(time.monotonic() + 1); ##all tasks run right away to start, then the interval kicks in
+					##all tasks run almost right away to start, then the interval kicks in
+					##let this be a few seconds, so other tasks can register
+					##if the first task has a very long interval the control process will sleep for tha period, even though other tasks have registered after 
+					self.setNextRun(time.monotonic() + 5);
 
 				self._isInit	= True;
 
